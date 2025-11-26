@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest # Or specify a specific version like postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persistent storage for database data
+    shm_size: 128mb # Recommended for PostgreSQL performance
+    ports:
+      - "${POSTGRES_PORT}:5432" # Optional: Expose port to host for direct access (e.g., via pgAdmin)
+
+volumes:
+  db_data:
