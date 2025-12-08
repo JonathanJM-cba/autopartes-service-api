@@ -13,6 +13,10 @@ public class ResponseDTO {
         this.message = message;
     }
 
+    public ResponseDTO(Object data) {
+        this.data = data;
+    }
+
     public ResponseDTO(String message, Object data) {
         this.message = message;
         this.data = data;
