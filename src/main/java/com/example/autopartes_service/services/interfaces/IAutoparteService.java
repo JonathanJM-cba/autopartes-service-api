@@ -1,7 +1,11 @@
 package com.example.autopartes_service.services.interfaces;
 
-import com.example.autopartes_service.entities.Autoparte;
+import java.util.List;
+
+import com.example.autopartes_service.dtos.StockPaisDTO;
 
 public interface IAutoparteService {
-    Autoparte save(Autoparte autoparte);
+    
+    List<StockPaisDTO> stockPorPais();
+    
 }
