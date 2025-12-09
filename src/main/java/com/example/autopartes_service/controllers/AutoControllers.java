@@ -9,18 +9,17 @@ import com.example.autopartes_service.dtos.ModeloAutoDTO;
 import com.example.autopartes_service.dtos.ResponseDTO;
 import com.example.autopartes_service.services.interfaces.IAutoService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/api/autos")
+@RequestMapping("/autos")
 public class AutoControllers {
 
     @Autowired
     private IAutoService autoService;
 
-    @GetMapping("/modelo")
-    public ResponseEntity<ResponseDTO> getAutoByModel(@RequestParam String modelo) {
+    @GetMapping("/modelo/{modelo}")
+    public ResponseEntity<ResponseDTO> getAutoByModel(@PathVariable String modelo) {
        ModeloAutoDTO modeloAutoDTO = autoService.getAutoByModel(modelo);
        return ResponseEntity.ok(new ResponseDTO(modeloAutoDTO));
     }
