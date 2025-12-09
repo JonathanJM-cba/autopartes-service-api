@@ -28,7 +28,12 @@ public class AutoService implements IAutoService{
             modeloAutoDTO.setStock(auto.getAutoparte().getStock());
 
             return modeloAutoDTO;
-        } catch (Exception e) {
+        } 
+
+        catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage());
+        }
+        catch (Exception e) {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
