@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.autopartes_service.dtos.ModeloAutoDTO;
 import com.example.autopartes_service.entities.Auto;
+import com.example.autopartes_service.exceptions.InternalServerErrorException;
+import com.example.autopartes_service.exceptions.NotFoundException;
 import com.example.autopartes_service.repositories.IAutoRepository;
 import com.example.autopartes_service.services.interfaces.IAutoService;
 
@@ -17,13 +19,17 @@ public class AutoService implements IAutoService{
     @Override
     public ModeloAutoDTO getAutoByModel(String modelo) {
         
-        Auto auto = autoRepository.findFirstByModelo(modelo).orElseThrow(() -> new RuntimeException("Auto not found"));
+        try {
+            Auto auto = autoRepository.findFirstByModelo(modelo).orElseThrow(() -> new NotFoundException("No se encontró un auto con el modelo: " + modelo));
 
-        ModeloAutoDTO modeloAutoDTO = new ModeloAutoDTO();
-        modeloAutoDTO.setDescripcion(auto.getAutoparte().getDescripcion());
-        modeloAutoDTO.setPrecio(auto.getAutoparte().getPrecioUnitario());
-        modeloAutoDTO.setStock(auto.getAutoparte().getStock());
+            ModeloAutoDTO modeloAutoDTO = new ModeloAutoDTO();
+            modeloAutoDTO.setDescripcion(auto.getAutoparte().getDescripcion());
+            modeloAutoDTO.setPrecio(auto.getAutoparte().getPrecioUnitario());
+            modeloAutoDTO.setStock(auto.getAutoparte().getStock());
 
-        return modeloAutoDTO;
+            return modeloAutoDTO;
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 }
