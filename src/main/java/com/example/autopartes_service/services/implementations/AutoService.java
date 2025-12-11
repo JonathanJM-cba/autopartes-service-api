@@ -20,6 +20,12 @@ public class AutoService implements IAutoService{
     private IAutoRepository autoRepository;
 
     @Override
+    public Auto getAutoEntityById(UUID id) {
+        Auto auto = autoRepository.findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado el auto con ID: " + id));
+        return auto;
+    }
+
+    @Override
     public AutoResponseDTO getAutoById(UUID id) {
         try {
             Auto auto = autoRepository.findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado el auto con ID: " + id));

@@ -19,6 +19,12 @@ public class PaisService implements IPaisService{
     private IPaisRepository paisRepository;
 
     @Override
+    public Pais getPaisEntityById(UUID id) {
+        Pais pais = paisRepository.findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado el País con ID: " + id));
+        return pais;
+    }
+
+    @Override
     public PaisResponseDTO getPaisById(UUID id) {
         try {
             Pais pais = paisRepository.findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado un país con el ID: " + id));
