@@ -1,6 +1,7 @@
 package com.example.autopartes_service.services.implementations;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.example.autopartes_service.entities.Auto;
 import com.example.autopartes_service.entities.Autoparte;
 import com.example.autopartes_service.entities.Pais;
 import com.example.autopartes_service.exceptions.InternalServerErrorException;
+import com.example.autopartes_service.exceptions.NotFoundException;
 import com.example.autopartes_service.repositories.IAutoparteRepository;
 import com.example.autopartes_service.services.interfaces.IAutoService;
 import com.example.autopartes_service.services.interfaces.IAutoparteService;
@@ -66,6 +68,21 @@ public class AutoparteServiceImpl implements IAutoparteService{
 
             return new AutoparteResponseDTO(newAutoparte.getCodigo(), newAutoparte.getDescripcion(), newAutoparte.getParteMotor(), newAutoparte.getPrecioUnitario(), newAutoparte.getStock(), autosDto, paisesDto);
         } catch (InternalServerErrorException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateStockAutoparte(UUID id, Integer stock) {
+        try {
+            Autoparte autoparte = autoparteRepository.findById(id).orElseThrow(() -> new NotFoundException("No se ha encontrado autoparte con ID: " + id));
+            autoparte.setStock(stock);
+            autoparteRepository.save(autoparte);
+        } 
+        catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage());
+        }
+        catch (InternalServerErrorException e) {
             throw new InternalServerErrorException(e.getMessage());
         }
     }

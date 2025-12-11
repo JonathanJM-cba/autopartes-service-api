@@ -12,10 +12,14 @@ import com.example.autopartes_service.services.interfaces.IAutoparteService;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -40,5 +44,11 @@ public class AutoparteController {
     public ResponseEntity<ResponseDTO> createAutoparte(@Valid @RequestBody AutoparteRequestDTO autoparte) {
         AutoparteResponseDTO newAutoparte = autoparteService.saveAutoparte(autoparte);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO("Autoparte creada con éxito", newAutoparte));
+    }
+
+    @PatchMapping("/{id}/stock/{stock}")
+    public ResponseEntity<ResponseDTO> updateStock(@PathVariable UUID id, @PathVariable Integer stock) {
+        autoparteService.updateStockAutoparte(id, stock);
+        return ResponseEntity.ok(new ResponseDTO("Stock actualizado con éxito"));
     }
 }
